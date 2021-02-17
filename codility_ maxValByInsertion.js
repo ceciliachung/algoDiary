@@ -1,5 +1,5 @@
-// 1337. Maximum Possible Value
-/** (EASY) || Wed Feb 17, 2021 || Math
+// Maximum Possible Value
+/** (MEDIUM) || Wed Feb 17, 2021 || Math
 https://www.lintcode.com/problem/maximum-possible-value/
 
 Write a function that given an integer N, returns the maximum possible value obtained 
