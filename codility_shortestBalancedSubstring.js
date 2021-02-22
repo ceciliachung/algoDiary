@@ -1,4 +1,4 @@
-// Maximum Possible Value
+// Shortest balaned substring
 /** (MEDIUM-HARD) || Wed Feb 17, 2021 || Strings
 
 A string is balanced when every letter ocurring in the string appears in both
