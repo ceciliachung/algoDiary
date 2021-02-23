@@ -31,22 +31,27 @@ Constraints
 */
 
 function findLongest(s) {
-  // Base cases, since we will be using recursion:
+  console.log(`findLongest("${s}")`);
+  // Base case #1: 0 or 1 length -> return 0.
   if (s.length <= 1) {
-    return 0; //A string of 1 char cannot be balanced
+    console.log('base case #1');
+    return 0;
   }
-  if (findUnbalanced(s).length === 0) {
+  // Base case #2: no unbalanced characters -> return entire string length.
+  // findUnbalanced() is a helper function that returns an array with the indexes of all unbalanced chars in s
+  const unbalancedIndices = findUnbalanced(s);
+  console.log('unbalancedIndices:', unbalancedIndices);
+  if (unbalancedIndices.length === 0) {
+    console.log('base case #2');
     return s.length;
-    //findUnbalanced() is a helper function that returns an array with the indexes of all unbalanced chars in s
   }
 
   // Enter the recursion!
   let longest = 0; // counter
-  // 1) Find the unbalanced indexes (function defined on )
-  const unbalancedIdx = findUnbalanced(s);
-  // 2) These indexes will be used to cut the string into substrings (function defined on )
-  const substrings = getSubstring(s, unbalancedIdx);
-  // 3) Loop through each substring, repeating the whole process, unless we hit a base case:
+  // Unbalanced indexes will be used to cut the string into substrings (function defined on )
+  const substrings = getSubstrings(s, unbalancedIndices);
+  console.log('substrings:', substrings);
+  // Loop through each substring, repeating the whole process, unless we hit a base case:
   for (let substr of substrings) {
     const answer = findLongest(substr);
     if (answer > longest) {
@@ -57,12 +62,41 @@ function findLongest(s) {
 }
 
 function findUnbalanced(s) {
+  let unbalancedIndices = [];
   // Loop through s, add to set
   const mySet = new Set();
   for (let char of s) {
     mySet.add(char);
   }
-  // Loop through set and check if both the upper and lower case exist
+  // Loop through s again, keep track of the index of each
+  for (let i = 0; i < s.length; i++) {
+    // is the char upper case?
+    if (s[i] === s[i].toUpperCase()) {
+      // Look for the lowerCase equivalent in 'mySet'
+      if (!mySet.has(s[i].toLowerCase())) {
+        // char is unbalanced -> record index
+        unbalancedIndices.push(i);
+      }
+    }
+    if (s[i] === s[i].toLowerCase()) {
+      // Look for the upperCase equivalent in 'mySet'
+      if (!mySet.has(s[i].toUpperCase())) {
+        // char is unbalanced -> record index
+        unbalancedIndices.push(i);
+      }
+    }
+  }
+  return unbalancedIndices;
 }
 
-function getSubstring(s, unbalancedIdx) {}
+function getSubstrings(s, unbalancedIndices) {
+  // Partitions the string into new substrings, based on the unbalanced indices
+  let substringArray = [];
+  let prev = 0;
+  for (let i of unbalancedIndices) {
+    substringArray.push(s.slice(prev, i));
+    prev = i + 1;
+  }
+  substringArray.push(s.slice(prev));
+  return substringArray;
+}
